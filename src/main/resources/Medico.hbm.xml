@@ -2,23 +2,23 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <class catalog="hospital" name="Modelo.Medico" optimistic-lock="version" table="medicos">
-        <id name="idMedico" type="java.lang.Integer">
+    <class name="Modelo.Medico" table="medicos">
+        <id name="idMedico">
             <column name="idMedico"/>
             <generator class="increment"/>
             <!--<generator class="identity"/>-->
         </id>
-        <property name="apellido" type="string">
+        <property name="apellido">
             <column length="30" name="apellido" not-null="true"/>
         </property>
-        <property name="nombre" type="string">
+        <property name="nombre">
             <column length="30" name="nombre" not-null="true"/>
         </property>
 
-        <property name="consultorio" type="string">
+        <property name="consultorio">
             <column length="10" name="consultorio" not-null="true"/>
         </property>
-        <property name="especialidad" type="string">
+        <property name="especialidad">
             <column length="100" name="especialidad" not-null="true"/>
         </property>
     </class>
@@ -37,7 +37,3 @@
  * Debería haber recibido una copia de la Licencia Pública General junto con este programa. 
  * Si no ha sido así ingrese a <a href = "http://www.gnu.org/licenses/"> GNU org </a>
  */-->
-
-
-
-

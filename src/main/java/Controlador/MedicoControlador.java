@@ -28,8 +28,8 @@ public class MedicoControlador {
     }
 
     public List<Medico> listMedicos() {
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
+        try ( Session session = HibernateUtil.getCurrentSession()) {
+
             session.beginTransaction();
 
             List<Medico> listado = session.createQuery("FROM Medico", Medico.class).getResultList();
@@ -44,14 +44,12 @@ public class MedicoControlador {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
-        } finally {
-            session.close();
-        }
+        } 
     }
 
     public Medico findMedicoById(int id) {
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
+        try ( Session session = HibernateUtil.getCurrentSession()) {
+
             session.beginTransaction();
 
             Medico medicoEncontrado = session.createQuery("FROM Medico WHERE idMedico =:id", Medico.class).setParameter("id", id).getSingleResult();
@@ -66,14 +64,12 @@ public class MedicoControlador {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
-        } finally {
-            session.close();
-        }
+        } 
     }
 
     public Medico findMedicoByApellido(String ape) {
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
+        try ( Session session = HibernateUtil.getCurrentSession()) {
+
             session.beginTransaction();
 
             Medico medicoEncontrado = session.createQuery("FROM Medico WHERE apellido =:ape", Medico.class).setParameter("ape", ape).getSingleResult();
@@ -88,29 +84,25 @@ public class MedicoControlador {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
-        } finally {
-            session.close();
-        }
+        } 
     }
 
     public void updateMedico(Medico medicoUpdate) {
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
+        try ( Session session = HibernateUtil.getCurrentSession()) {
+
             session.beginTransaction();
-            session.saveOrUpdate(medicoUpdate);
+            session.merge(medicoUpdate);
             session.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            session.close();
-        }
+        } 
     }
 
     public Medico addMedico(Medico medicoAdd) {
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
+        try ( Session session = HibernateUtil.getCurrentSession()) {
+
             session.beginTransaction();
-            session.save(medicoAdd);
+            session.persist(medicoAdd);
             session.getTransaction().commit();
             return medicoAdd;
         } catch (Exception e) {
@@ -120,22 +112,20 @@ public class MedicoControlador {
     }
 
     public void deleteMedico(int id) {
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
+        try ( Session session = HibernateUtil.getCurrentSession()) {
+
             session.beginTransaction();
             Medico medicoEliminar = session.createQuery("FROM Medico WHERE idMedico =:id", Medico.class).setParameter("id", id).getSingleResult();
-            session.delete(medicoEliminar);
+            session.remove(medicoEliminar);
             session.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            session.close();
-        }
+        } 
     }
 
     public List<Medico> listMedicosEspecialidad(String esp) {
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
+        try ( Session session = HibernateUtil.getCurrentSession()) {
+
             session.beginTransaction();
 
             List<Medico> listado = session.createQuery("FROM Medico WHERE especialidad =:esp", Medico.class).setParameter("esp", esp).getResultList();
@@ -150,14 +140,12 @@ public class MedicoControlador {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
-        } finally {
-            session.close();
-        }
+        } 
     }
 
     public List<Medico> listMedicosConsultorio(String cons) {
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
+        try ( Session session = HibernateUtil.getCurrentSession()) {
+
             session.beginTransaction();
 
             List<Medico> listado = session.createQuery("FROM Medico WHERE consultorio =:cons", Medico.class).setParameter("cons", cons).getResultList();
@@ -172,8 +160,6 @@ public class MedicoControlador {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
-        } finally {
-            session.close();
-        }
+        } 
     }
 }

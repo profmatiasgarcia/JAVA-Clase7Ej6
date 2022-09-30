@@ -28,8 +28,8 @@ public class PacienteControlador {
     }
 
     public List<Paciente> listPacientes() {
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
+        try ( Session session = HibernateUtil.getCurrentSession()) {
+
             session.beginTransaction();
 
             List<Paciente> listado = session.createQuery("FROM pacientes", Paciente.class).getResultList();
@@ -44,14 +44,12 @@ public class PacienteControlador {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
-        } finally {
-            session.close();
-        }
+        } 
     }
 
     public Paciente findPacienteById(int id) {
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
+        try ( Session session = HibernateUtil.getCurrentSession()) {
+
             session.beginTransaction();
 
             Paciente pacienteEncontrado = session.createQuery("FROM pacientes where dni =:id", Paciente.class).setParameter("id", id).getSingleResult();
@@ -63,29 +61,25 @@ public class PacienteControlador {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
-        } finally {
-            session.close();
-        }
+        } 
     }
 
     public void updatePaciente(Paciente pacienteUpdate) {
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
+        try ( Session session = HibernateUtil.getCurrentSession()) {
+
             session.beginTransaction();
-            session.saveOrUpdate(pacienteUpdate);
+            session.merge(pacienteUpdate);
             session.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            session.close();
-        }
+        } 
     }
 
     public Paciente addPaciente(Paciente pacienteAgregar) {
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
+        try ( Session session = HibernateUtil.getCurrentSession()) {
+
             session.beginTransaction();
-            session.save(pacienteAgregar);
+            session.persist(pacienteAgregar);
             session.getTransaction().commit();
             return pacienteAgregar;
         } catch (Exception e) {
@@ -95,17 +89,15 @@ public class PacienteControlador {
     }
 
     public void deletePaciente(int id) {
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
+        try ( Session session = HibernateUtil.getCurrentSession()) {
+
             session.beginTransaction();
             Paciente pacienteEliminar = session.createQuery("FROM pacientes where dni =:id", Paciente.class).setParameter("id", id).getSingleResult();
-            session.delete(pacienteEliminar);
+            session.remove(pacienteEliminar);
             session.getTransaction().commit();
             System.out.println("Se elimino el paciente");
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            session.close();
-        }
+        } 
     }
 }
